@@ -428,6 +428,57 @@
     </div>
   </div>
 
+  <!-- ── Modal: Editar Presente ──────────────────────────────── -->
+  <div id="modal-editar" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(42,31,26,0.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#fff;border-radius:20px;padding:2rem;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brown)">Editar Presente</h3>
+        <button onclick="fecharEditar()" style="font-size:1.5rem;color:var(--brown-mid);background:none;border:none;cursor:pointer;line-height:1">×</button>
+      </div>
+      <form id="form-editar-presente">
+        <input type="hidden" id="edit-id">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label">Nome do presente *</label>
+            <input class="form-input" type="text" id="edit-nome" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor sugerido (R$)</label>
+            <input class="form-input" type="number" id="edit-preco" step="0.01" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ordem de exibição</label>
+            <input class="form-input" type="number" id="edit-ordem" value="0" min="0">
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label">Imagem do presente</label>
+            <div class="upload-area" id="edit-upload-area" onclick="document.getElementById('edit-imagem-file').click()">
+              <div class="upload-placeholder" id="edit-upload-placeholder">
+                <span style="font-size:2rem">📷</span>
+                <span style="font-size:0.85rem;color:var(--brown-mid)">Clique para trocar a foto</span>
+              </div>
+              <img id="edit-upload-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:10px;" alt="preview">
+              <div id="edit-upload-progress" style="display:none;position:absolute;inset:0;background:rgba(250,246,241,0.85);border-radius:10px;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;">
+                <div class="upload-spinner"></div>
+                <span style="font-size:0.8rem;color:var(--brown-mid)">Enviando...</span>
+              </div>
+            </div>
+            <input type="file" id="edit-imagem-file" accept="image/*" style="display:none">
+            <input type="hidden" id="edit-imagem">
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-textarea" id="edit-descricao" rows="3"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:0.5rem;">
+          <button type="button" onclick="fecharEditar()" style="flex:1;padding:0.85rem;border:1.5px solid var(--cream-dark);border-radius:8px;font-size:0.85rem;font-family:'Outfit',sans-serif;cursor:pointer;background:#fff;color:var(--brown-mid)">Cancelar</button>
+          <button type="submit" id="btn-salvar-edicao" style="flex:2;padding:0.85rem;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ── Painel: Presenteadores ────────────────────────────── -->
   <div id="panel-presenteadores" class="admin-panel">
     <div class="admin-table-wrap">
@@ -636,12 +687,18 @@ async function carregarPresentesAdmin() {
 
     const acoes = p.status === 'dado'
       ? `<button class="btn-action btn-liberar" onclick="acao('liberar','${p.id}')">Liberar</button>
+         <button class="btn-action" onclick="abrirEditar(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="background:#f0e8df;color:var(--brown)">✏️ Editar</button>
          <button class="btn-action btn-excluir" onclick="acao('excluir','${p.id}')">Excluir</button>`
       : `<button class="btn-action btn-dado"    onclick="acao('dado','${p.id}')">Marcar dado</button>
+         <button class="btn-action" onclick="abrirEditar(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="background:#f0e8df;color:var(--brown)">✏️ Editar</button>
          <button class="btn-action btn-excluir" onclick="acao('excluir','${p.id}')">Excluir</button>`;
 
+    const thumb = p.imagem_url
+      ? `<img src="${p.imagem_url}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;display:block;" onerror="this.style.display='none'">`
+      : `<div style="width:48px;height:48px;background:var(--cream-dark);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">🎁</div>`;
+
     return `<tr>
-      <td><strong>${p.nome}</strong>${p.descricao ? `<br><small style="color:var(--brown-mid)">${p.descricao}</small>` : ''}</td>
+      <td style="display:flex;gap:0.75rem;align-items:center">${thumb}<div><strong>${p.nome}</strong>${p.descricao ? `<br><small style="color:var(--brown-mid)">${p.descricao}</small>` : ''}</div></td>
       <td>${preco}</td>
       <td>${badge}</td>
       <td>${acoes}</td>
@@ -663,6 +720,124 @@ async function carregarPresentesAdmin() {
       </table>
     </div>`;
 }
+
+// ── Editar presente ───────────────────────────────────────
+function abrirEditar(p) {
+  document.getElementById('edit-id').value        = p.id;
+  document.getElementById('edit-nome').value      = p.nome || '';
+  document.getElementById('edit-preco').value     = p.preco || '';
+  document.getElementById('edit-ordem').value     = p.ordem ?? 0;
+  document.getElementById('edit-descricao').value = p.descricao || '';
+  document.getElementById('edit-imagem').value    = p.imagem_url || '';
+
+  const preview = document.getElementById('edit-upload-preview');
+  const placeholder = document.getElementById('edit-upload-placeholder');
+  const area = document.getElementById('edit-upload-area');
+
+  if (p.imagem_url) {
+    preview.src = p.imagem_url;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+    area.classList.add('has-image');
+  } else {
+    preview.style.display = 'none';
+    placeholder.style.display = 'flex';
+    area.classList.remove('has-image');
+  }
+
+  const modal = document.getElementById('modal-editar');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharEditar() {
+  document.getElementById('modal-editar').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Upload de imagem no modal de edição
+document.getElementById('edit-imagem-file')?.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const area        = document.getElementById('edit-upload-area');
+  const placeholder = document.getElementById('edit-upload-placeholder');
+  const preview     = document.getElementById('edit-upload-preview');
+  const progress    = document.getElementById('edit-upload-progress');
+
+  placeholder.style.display = 'none';
+  preview.style.display     = 'none';
+  progress.style.display    = 'flex';
+
+  const ext      = file.name.split('.').pop();
+  const fileName = `presente_${Date.now()}.${ext}`;
+  const bucket   = 'presentes';
+
+  try {
+    const res = await fetch(
+      `${CONFIG.SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`,
+      {
+        method: 'POST',
+        headers: {
+          apikey: CONFIG.SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+          'Content-Type': file.type,
+          'x-upsert': 'true',
+        },
+        body: file,
+      }
+    );
+    if (!res.ok) throw new Error(await res.text());
+
+    const publicUrl = `${CONFIG.SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
+    document.getElementById('edit-imagem').value = publicUrl;
+    preview.src           = publicUrl;
+    preview.style.display = 'block';
+    area.classList.add('has-image');
+  } catch (err) {
+    showAdminToast('Erro ao enviar imagem. Verifique o bucket no Supabase.', 'error');
+    placeholder.style.display = 'flex';
+  } finally {
+    progress.style.display = 'none';
+  }
+});
+
+// Salvar edição
+document.getElementById('form-editar-presente')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('btn-salvar-edicao');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  const id     = document.getElementById('edit-id').value;
+  const nome   = document.getElementById('edit-nome').value.trim();
+  const preco  = document.getElementById('edit-preco').value || null;
+  const imagem = document.getElementById('edit-imagem').value.trim() || null;
+  const desc   = document.getElementById('edit-descricao').value.trim() || null;
+  const ordem  = parseInt(document.getElementById('edit-ordem').value) || 0;
+
+  const ok = await dbPatch('presentes', id, {
+    nome,
+    descricao: desc,
+    preco: preco ? parseFloat(preco) : null,
+    imagem_url: imagem,
+    ordem,
+  });
+
+  if (ok) {
+    showAdminToast('Presente atualizado! ✅');
+    fecharEditar();
+    carregarPresentesAdmin();
+  } else {
+    showAdminToast('Erro ao salvar. Tente novamente.', 'error');
+  }
+
+  btn.disabled = false; btn.textContent = 'Salvar alterações';
+});
+
+// Fechar modal clicando fora
+document.getElementById('modal-editar')?.addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modal-editar')) fecharEditar();
+});
 
 async function acao(tipo, id) {
   if (tipo === 'excluir' && !confirm('Tem certeza que deseja excluir este presente?')) return;
