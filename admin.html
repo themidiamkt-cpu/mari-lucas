@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Mari & Lucas</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Admin override styles ────────────────────────────── */
+    body { background: #f5f0eb; }
+
+    .admin-login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .admin-login-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 40px var(--shadow);
+      text-align: center;
+    }
+
+    .admin-login-logo {
+      font-family: 'Italiana', serif;
+      font-size: 3rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-login-sub {
+      color: var(--brown-mid);
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-login-error {
+      background: #ffebee;
+      color: #c62828;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .admin-login-error.show { display: block; }
+
+    /* ── Admin main ──────────────────────────────────────── */
+    #admin-main { display: none; min-height: 100vh; }
+    #admin-main.show { display: block; }
+
+    .admin-header {
+      background: var(--brown);
+      padding: 1.25rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-header-logo {
+      font-family: 'Italiana', serif;
+      font-size: 1.75rem;
+      color: var(--cream);
+    }
+
+    .admin-header-sub {
+      font-size: 0.75rem;
+      color: var(--rose-light);
+      letter-spacing: 0.1em;
+    }
+
+    .btn-logout {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid rgba(250,246,241,0.3);
+      border-radius: 50px;
+      color: var(--cream);
+      font-size: 0.8rem;
+      transition: all var(--transition);
+    }
+    .btn-logout:hover { background: rgba(250,246,241,0.1); }
+
+    /* Tabs */
+    .admin-tabs {
+      background: var(--white);
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex;
+      padding: 0 5%;
+      overflow-x: auto;
+    }
+
+    .admin-tab {
+      padding: 1.1rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--brown-mid);
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid transparent;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .admin-tab.active { color: var(--gold-dark); border-bottom-color: var(--gold); }
+    .admin-tab:hover  { color: var(--brown); }
+
+    /* Panels */
+    .admin-panel { display: none; padding: 2.5rem 5%; max-width: 1100px; margin: 0 auto; }
+    .admin-panel.active { display: block; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 12px var(--shadow);
+      border-top: 3px solid var(--rose);
+    }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.75rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      margin-top: 0.35rem;
+    }
+
+    /* Table */
+    .admin-table-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px var(--shadow);
+      overflow: hidden;
+    }
+
+    .admin-table-title {
+      padding: 1.25rem 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--brown);
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .admin-table th {
+      background: var(--cream);
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--cream-dark);
+      color: var(--brown);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: #fdf9f6; }
+
+    .tag-adulto {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      background: var(--cream-dark);
+      color: var(--brown-mid);
+      margin: 2px;
+    }
+    .tag-crianca {
+      background: var(--rose-light);
+      color: var(--rose-dark);
+    }
+
+    /* Presentes admin form */
+    .presente-form {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: 0 2px 12px var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .presente-form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 1.25rem;
+    }
+
+    .presente-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Action buttons */
+    .btn-action {
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin: 2px;
+      transition: all var(--transition);
+    }
+
+    .btn-dado { background: #c8e6c9; color: #2e7d32; }
+    .btn-dado:hover { background: #a5d6a7; }
+    .btn-liberar { background: #fff9c4; color: #f57f17; }
+    .btn-liberar:hover { background: #fff176; }
+    .btn-excluir { background: #ffcdd2; color: #c62828; }
+    .btn-excluir:hover { background: #ef9a9a; }
+
+    .badge-disponivel { background: var(--rose-light); color: var(--rose-dark); }
+    .badge-dado { background: #c8e6c9; color: #2e7d32; }
+
+    .admin-loading {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--brown-mid);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--brown-mid);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    @media (max-width: 640px) {
+      .admin-table { font-size: 0.8rem; }
+      .admin-table th, .admin-table td { padding: 0.65rem 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ──────────────────────────────────────────────── -->
+<div id="admin-login" class="admin-login">
+  <div class="admin-login-box">
+    <div class="admin-login-logo">M &amp; L</div>
+    <p class="admin-login-sub">Área restrita · Noivos</p>
+
+    <div id="login-error" class="admin-login-error">Senha incorreta. Tente novamente.</div>
+
+    <form id="login-form">
+      <div class="form-group" style="text-align:left;">
+        <label class="form-label" for="login-senha">Senha</label>
+        <input class="form-input" type="password" id="login-senha" placeholder="••••••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-primary">Entrar</button>
+    </form>
+
+    <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--brown-mid)">
+      <a href="index.html" style="color:var(--gold-dark);">← Voltar ao site</a>
+    </p>
+  </div>
+</div>
+
+<!-- ── Admin Main ─────────────────────────────────────────── -->
+<div id="admin-main">
+  <!-- Header -->
+  <div class="admin-header">
+    <div>
+      <div class="admin-header-logo">M &amp; L · Admin</div>
+      <div class="admin-header-sub">Painel dos noivos</div>
+    </div>
+    <button class="btn-logout" onclick="logout()">Sair</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('confirmacoes', this)">💌 Confirmações</button>
+    <button class="admin-tab" onclick="switchTab('presentes', this)">🎁 Presentes</button>
+    <button class="admin-tab" onclick="switchTab('presenteadores', this)">💝 Quem presenteou</button>
+  </div>
+
+  <!-- ── Painel: Confirmações ──────────────────────────────── -->
+  <div id="panel-confirmacoes" class="admin-panel active">
+    <div class="stats-grid">
+      <div class="stat-card" style="border-color:var(--gold)">
+        <div class="stat-number" id="stat-familias">—</div>
+        <div class="stat-label">Famílias</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total">—</div>
+        <div class="stat-label">Total de pessoas</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--rose)">
+        <div class="stat-number" id="stat-adultos">—</div>
+        <div class="stat-label">Adultos</div>
+      </div>
+      <div class="stat-card" style="border-color:#81c784">
+        <div class="stat-number" id="stat-criancas">—</div>
+        <div class="stat-label">Crianças (≤12)</div>
+      </div>
+    </div>
+
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        Lista de confirmações
+        <button class="btn-action btn-liberar" onclick="carregarConfirmacoes()">↻ Atualizar</button>
+      </div>
+      <div id="tabela-rsvp-container">
+        <div class="admin-loading">Carregando confirmações...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Painel: Presentes ─────────────────────────────────── -->
+  <div id="panel-presentes" class="admin-panel">
+    <div class="presente-form">
+      <div class="presente-form-title">+ Adicionar presente</div>
+      <form id="form-add-presente">
+        <div class="presente-form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome do presente *</label>
+            <input class="form-input" type="text" id="p-nome" placeholder="Ex: Jogo de panelas" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor sugerido (R$)</label>
+            <input class="form-input" type="number" id="p-preco" placeholder="Ex: 450.00" step="0.01" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL da imagem</label>
+            <input class="form-input" type="url" id="p-imagem" placeholder="https://images.unsplash.com/...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ordem de exibição</label>
+            <input class="form-input" type="number" id="p-ordem" placeholder="1, 2, 3..." value="0" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição</label>
+          <input class="form-input" type="text" id="p-descricao" placeholder="Breve descrição do item">
+        </div>
+        <button type="submit" class="btn-primary" style="width:auto;padding:0.85rem 2rem;">Adicionar presente</button>
+      </form>
+    </div>
+
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        Presentes cadastrados
+        <button class="btn-action btn-liberar" onclick="carregarPresentesAdmin()">↻ Atualizar</button>
+      </div>
+      <div id="tabela-presentes-container">
+        <div class="admin-loading">Carregando presentes...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Painel: Presenteadores ────────────────────────────── -->
+  <div id="panel-presenteadores" class="admin-panel">
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        Quem presenteou
+        <button class="btn-action btn-liberar" onclick="carregarPresenteadores()">↻ Atualizar</button>
+      </div>
+      <div id="tabela-presenteadores-container">
+        <div class="admin-loading">Carregando...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="config.js"></script>
+<script>
+// ── Auth ──────────────────────────────────────────────────
+const AUTHED_KEY = 'ml_admin_auth';
+
+function checkAuth() {
+  return sessionStorage.getItem(AUTHED_KEY) === 'true';
+}
+
+function logout() {
+  sessionStorage.removeItem(AUTHED_KEY);
+  location.reload();
+}
+
+document.getElementById('login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const senha = document.getElementById('login-senha').value;
+  if (senha === CONFIG.ADMIN_PASSWORD) {
+    sessionStorage.setItem(AUTHED_KEY, 'true');
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-main').classList.add('show');
+    initAdmin();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('login-senha').value = '';
+  }
+});
+
+if (checkAuth()) {
+  document.getElementById('admin-login').style.display = 'none';
+  document.getElementById('admin-main').classList.add('show');
+}
+
+// ── DB helper ─────────────────────────────────────────────
+async function dbFetch(table, filters = [], orderCol = 'created_at', asc = false) {
+  let query = `${CONFIG.SUPABASE_URL}/rest/v1/${table}?select=*`;
+  if (filters.length) query += '&' + filters.join('&');
+  if (orderCol) query += `&order=${orderCol}.${asc ? 'asc' : 'desc'}`;
+  const res = await fetch(query, {
+    headers: {
+      apikey: CONFIG.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+    }
+  });
+  return res.ok ? await res.json() : [];
+}
+
+async function dbInsert(table, obj) {
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      apikey: CONFIG.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation',
+    },
+    body: JSON.stringify(obj)
+  });
+  return res.ok;
+}
+
+async function dbPatch(table, id, obj) {
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: {
+      apikey: CONFIG.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation',
+    },
+    body: JSON.stringify(obj)
+  });
+  return res.ok;
+}
+
+async function dbDelete(table, id) {
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: {
+      apikey: CONFIG.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+    }
+  });
+  return res.ok;
+}
+
+// ── Toast admin ───────────────────────────────────────────
+function showAdminToast(msg, type = 'success') {
+  let t = document.getElementById('admin-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'admin-toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Tabs ──────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(`panel-${name}`).classList.add('active');
+}
+
+// ── Confirmações ──────────────────────────────────────────
+async function carregarConfirmacoes() {
+  const container = document.getElementById('tabela-rsvp-container');
+  container.innerHTML = '<div class="admin-loading">Carregando...</div>';
+
+  const data = await dbFetch('rsvp');
+
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-state">Nenhuma confirmação ainda. Aguardando convidados! 💕</div>';
+    ['stat-familias','stat-total','stat-adultos','stat-criancas'].forEach(id => {
+      document.getElementById(id).textContent = '0';
+    });
+    return;
+  }
+
+  let totalPessoas = 0, totalAdultos = 0, totalCriancas = 0;
+  data.forEach(r => {
+    const convs = Array.isArray(r.convidados) ? r.convidados : [];
+    totalPessoas += convs.length || r.total_convidados || 0;
+    convs.forEach(c => {
+      if (c.faixa === 'crianca') totalCriancas++;
+      else totalAdultos++;
+    });
+  });
+
+  document.getElementById('stat-familias').textContent = data.length;
+  document.getElementById('stat-total').textContent    = totalPessoas;
+  document.getElementById('stat-adultos').textContent  = totalAdultos;
+  document.getElementById('stat-criancas').textContent = totalCriancas;
+
+  const rows = data.map(r => {
+    const convs = Array.isArray(r.convidados) ? r.convidados : [];
+    const convTags = convs.map(c =>
+      `<span class="tag-${c.faixa === 'crianca' ? 'crianca' : 'adulto'} tag-adulto">${c.nome}</span>`
+    ).join(' ');
+
+    const date = new Date(r.created_at).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
+
+    return `<tr>
+      <td style="white-space:nowrap">${date}</td>
+      <td><strong>${r.responsavel}</strong></td>
+      <td>${r.telefone || '—'}${r.email ? `<br><small style="color:var(--brown-mid)">${r.email}</small>` : ''}</td>
+      <td>${convTags || '—'}</td>
+      <td style="font-style:italic;color:var(--brown-mid)">${r.mensagem || '—'}</td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Responsável</th>
+            <th>Contato</th>
+            <th>Convidados</th>
+            <th>Mensagem</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ── Presentes admin ───────────────────────────────────────
+async function carregarPresentesAdmin() {
+  const container = document.getElementById('tabela-presentes-container');
+  container.innerHTML = '<div class="admin-loading">Carregando...</div>';
+
+  const data = await dbFetch('presentes', [], 'ordem', true);
+
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-state">Nenhum presente cadastrado. Adicione o primeiro! 🎁</div>';
+    return;
+  }
+
+  const rows = data.map(p => {
+    const preco = p.preco ? `R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}` : '—';
+    const badge = p.status === 'dado'
+      ? '<span class="presente-status-badge dado">✓ Dado</span>'
+      : '<span class="presente-status-badge">Disponível</span>';
+
+    const acoes = p.status === 'dado'
+      ? `<button class="btn-action btn-liberar" onclick="acao('liberar','${p.id}')">Liberar</button>
+         <button class="btn-action btn-excluir" onclick="acao('excluir','${p.id}')">Excluir</button>`
+      : `<button class="btn-action btn-dado"    onclick="acao('dado','${p.id}')">Marcar dado</button>
+         <button class="btn-action btn-excluir" onclick="acao('excluir','${p.id}')">Excluir</button>`;
+
+    return `<tr>
+      <td><strong>${p.nome}</strong>${p.descricao ? `<br><small style="color:var(--brown-mid)">${p.descricao}</small>` : ''}</td>
+      <td>${preco}</td>
+      <td>${badge}</td>
+      <td>${acoes}</td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Presente</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+async function acao(tipo, id) {
+  if (tipo === 'excluir' && !confirm('Tem certeza que deseja excluir este presente?')) return;
+
+  let ok = false;
+  if (tipo === 'dado')    ok = await dbPatch('presentes', id, { status: 'dado' });
+  if (tipo === 'liberar') ok = await dbPatch('presentes', id, { status: 'disponivel' });
+  if (tipo === 'excluir') ok = await dbDelete('presentes', id);
+
+  if (ok) {
+    showAdminToast(tipo === 'excluir' ? 'Presente excluído.' : 'Status atualizado!');
+    carregarPresentesAdmin();
+  } else {
+    showAdminToast('Erro ao executar ação.', 'error');
+  }
+}
+
+// Form adicionar presente
+document.getElementById('form-add-presente')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type=submit]');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  const nome    = document.getElementById('p-nome').value.trim();
+  const preco   = document.getElementById('p-preco').value || null;
+  const imagem  = document.getElementById('p-imagem').value.trim() || null;
+  const desc    = document.getElementById('p-descricao').value.trim() || null;
+  const ordem   = parseInt(document.getElementById('p-ordem').value) || 0;
+
+  const ok = await dbInsert('presentes', { nome, descricao: desc, preco: preco ? parseFloat(preco) : null, imagem_url: imagem, status: 'disponivel', ordem });
+
+  if (ok) {
+    showAdminToast('Presente adicionado! 🎁');
+    e.target.reset();
+    carregarPresentesAdmin();
+  } else {
+    showAdminToast('Erro ao adicionar presente.', 'error');
+  }
+
+  btn.disabled = false; btn.textContent = 'Adicionar presente';
+});
+
+// ── Presenteadores ────────────────────────────────────────
+async function carregarPresenteadores() {
+  const container = document.getElementById('tabela-presenteadores-container');
+  container.innerHTML = '<div class="admin-loading">Carregando...</div>';
+
+  const data = await dbFetch('presenteadores');
+
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-state">Nenhum presente registrado ainda. 💝</div>';
+    return;
+  }
+
+  const rows = data.map(p => {
+    const valor = p.presente_valor ? `R$ ${parseFloat(p.presente_valor).toFixed(2).replace('.', ',')}` : '—';
+    const date  = new Date(p.created_at).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    return `<tr>
+      <td style="white-space:nowrap">${date}</td>
+      <td><strong>${p.nome_pessoa}</strong>${p.telefone ? `<br><small style="color:var(--brown-mid)">${p.telefone}</small>` : ''}</td>
+      <td>${p.presente_nome || '—'}</td>
+      <td>${valor}</td>
+      <td style="font-style:italic;color:var(--brown-mid)">${p.mensagem || '—'}</td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Quem presenteou</th>
+            <th>Presente</th>
+            <th>Valor</th>
+            <th>Mensagem</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────
+function initAdmin() {
+  carregarConfirmacoes();
+  carregarPresentesAdmin();
+  carregarPresenteadores();
+}
+
+// Auto-init se já logado
+if (checkAuth()) initAdmin();
+</script>
+</body>
+</html>

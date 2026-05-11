@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Casamento de Mari e Lucas — 25 de outubro de 2026">
+  <title>Mari & Lucas — 25.10.2026</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mari & Lucas — Nosso Casamento">
+  <meta property="og:description" content="Junte-se a nós neste dia especial — 25 de outubro de 2026">
+  <meta property="og:type" content="website">
+</head>
+<body>
+
+<!-- ── Loader ──────────────────────────────────────────────── -->
+<div id="loader">
+  <div class="loader-monogram">M &amp; L</div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- ── Nav ────────────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-logo">M &amp; L</div>
+  <ul class="nav-links">
+    <li><a href="#historia">História</a></li>
+    <li><a href="#cerimonia">Cerimônia</a></li>
+    <li><a href="#presentes">Presentes</a></li>
+    <li><a href="#rsvp">Confirmar</a></li>
+  </ul>
+  <button class="nav-burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── Hero: Scroll Expansion ─────────────────────────────── -->
+<div id="shero-track">
+<section id="hero">
+
+  <!-- BG (some conforme scroll avança) -->
+  <div class="shero-bg" id="shero-bg">
+    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80&auto=format&fit=crop" alt="" loading="eager">
+    <div class="shero-bg-dim"></div>
+  </div>
+
+  <!-- Card central que expande -->
+  <div class="shero-media" id="shero-media">
+    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1280&q=80&auto=format&fit=crop" alt="Mari e Lucas" class="shero-media-img" loading="eager">
+    <div class="shero-media-dim" id="shero-media-dim"></div>
+  </div>
+
+  <!-- Nomes: separam-se horizontalmente conforme o scroll -->
+  <div class="shero-split" aria-hidden="true">
+    <span class="shero-word" id="shero-word-left">Mari</span>
+    <span class="shero-word" id="shero-word-right">Lucas</span>
+  </div>
+
+  <!-- Meta abaixo do card -->
+  <div class="shero-meta" id="shero-meta">
+    <span class="shero-meta-date" id="shero-meta-date">25 · 10 · 2026</span>
+    <span class="shero-meta-hint" id="shero-meta-hint">&#8595; Role para revelar</span>
+  </div>
+
+  <!-- Conteúdo revelado após expansão total -->
+  <div class="shero-revealed" id="shero-revealed">
+    <span class="section-eyebrow shero-eyebrow">Save the Date</span>
+    <h1 class="hero-names shero-hero-names">
+      Mari <span class="hero-ampersand shero-ampersand">&amp;</span> Lucas
+    </h1>
+    <p class="hero-date shero-hero-date">25 de outubro de 2026 · São Paulo</p>
+    <div class="countdown shero-countdown">
+      <div class="countdown-item"><span class="countdown-number" id="cd-days">--</span><span class="countdown-label shero-cd-label">Dias</span></div>
+      <span class="countdown-sep shero-cd-sep">:</span>
+      <div class="countdown-item"><span class="countdown-number" id="cd-hours">--</span><span class="countdown-label shero-cd-label">Horas</span></div>
+      <span class="countdown-sep shero-cd-sep">:</span>
+      <div class="countdown-item"><span class="countdown-number" id="cd-minutes">--</span><span class="countdown-label shero-cd-label">Min</span></div>
+      <span class="countdown-sep shero-cd-sep">:</span>
+      <div class="countdown-item"><span class="countdown-number" id="cd-seconds">--</span><span class="countdown-label shero-cd-label">Seg</span></div>
+    </div>
+    <a href="#rsvp" class="cta-btn shero-cta"><span>💌</span> Confirmar presença</a>
+  </div>
+
+  <!-- Flores mantidas (aparecem com o conteúdo revelado) -->
+  <div class="flores-container" aria-hidden="true">
+
+    <!-- Rosa grande — canto superior esquerdo -->
+    <div class="flor" id="flor-1" style="top:-2%;left:-4%;width:320px;opacity:0.82">
+      <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Caule -->
+          <path d="M150 330 Q145 260 140 200 Q135 150 150 80" stroke="#8a9e6a" stroke-width="2.5" fill="none"/>
+          <!-- Folha esquerda -->
+          <path d="M143 210 Q110 190 95 165 Q120 158 143 180Z" fill="#a8bf80" opacity="0.7"/>
+          <!-- Folha direita -->
+          <path d="M140 170 Q170 148 190 130 Q182 158 155 165Z" fill="#8a9e6a" opacity="0.6"/>
+          <!-- Pétalas rosa -->
+          <ellipse cx="150" cy="72" rx="28" ry="38" fill="#e8c4c0" transform="rotate(-15,150,72)" opacity="0.9"/>
+          <ellipse cx="150" cy="72" rx="28" ry="38" fill="#dba8a2" transform="rotate(30,150,72)" opacity="0.85"/>
+          <ellipse cx="150" cy="72" rx="28" ry="38" fill="#e8c4c0" transform="rotate(75,150,72)" opacity="0.8"/>
+          <ellipse cx="150" cy="72" rx="28" ry="38" fill="#d4948e" transform="rotate(120,150,72)" opacity="0.85"/>
+          <ellipse cx="150" cy="72" rx="28" ry="38" fill="#e8c4c0" transform="rotate(165,150,72)" opacity="0.9"/>
+          <!-- Centro -->
+          <circle cx="150" cy="72" r="16" fill="#c9847e"/>
+          <circle cx="150" cy="72" r="9"  fill="#b87070"/>
+          <!-- Botão pequeno -->
+          <ellipse cx="168" cy="110" rx="10" ry="14" fill="#e8c4c0" transform="rotate(20,168,110)" opacity="0.75"/>
+          <ellipse cx="168" cy="110" rx="10" ry="14" fill="#dba8a2" transform="rotate(80,168,110)" opacity="0.7"/>
+          <circle cx="168" cy="110" r="6" fill="#c9847e" opacity="0.8"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Cerejeira — canto superior direito -->
+    <div class="flor" id="flor-2" style="top:-3%;right:-5%;width:280px;opacity:0.78">
+      <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <!-- Galhos -->
+          <path d="M200 310 Q190 250 170 200 Q155 165 120 120" stroke="#9e8060" stroke-width="2" fill="none"/>
+          <path d="M170 200 Q190 175 210 150" stroke="#9e8060" stroke-width="1.5" fill="none"/>
+          <path d="M155 165 Q130 145 110 155" stroke="#9e8060" stroke-width="1.5" fill="none"/>
+          <path d="M140 135 Q115 110 100 95"  stroke="#9e8060" stroke-width="1.5" fill="none"/>
+          <!-- Flores cerejeira -->
+          <g opacity="0.88">
+            <circle cx="120" cy="118" r="14" fill="#f0d0d5"/>
+            <circle cx="112" cy="112" r="10" fill="#e8c0c5"/>
+            <circle cx="130" cy="110" r="10" fill="#f0d0d5"/>
+            <circle cx="118" cy="105" r="8"  fill="#e0b0b8"/>
+            <circle cx="124" cy="116" r="5"  fill="#c8908a"/>
+          </g>
+          <g opacity="0.82">
+            <circle cx="210" cy="148" r="12" fill="#f0d0d5"/>
+            <circle cx="202" cy="142" r="9"  fill="#e8c0c5"/>
+            <circle cx="220" cy="142" r="9"  fill="#f0d0d5"/>
+            <circle cx="208" cy="136" r="7"  fill="#e0b0b8"/>
+            <circle cx="214" cy="148" r="4"  fill="#c8908a"/>
+          </g>
+          <g opacity="0.76">
+            <circle cx="100" cy="93"  r="11" fill="#f0d0d5"/>
+            <circle cx="93"  cy="88"  r="8"  fill="#e8c0c5"/>
+            <circle cx="109" cy="88"  r="8"  fill="#f0d0d5"/>
+            <circle cx="100" cy="82"  r="6"  fill="#e0b0b8"/>
+            <circle cx="102" cy="93"  r="4"  fill="#c8908a"/>
+          </g>
+          <g opacity="0.70">
+            <circle cx="110" cy="153" r="10" fill="#f0d0d5"/>
+            <circle cx="104" cy="148" r="7"  fill="#e8c0c5"/>
+            <circle cx="117" cy="148" r="7"  fill="#f0d0d5"/>
+            <circle cx="110" cy="143" r="5"  fill="#e0b0b8"/>
+            <circle cx="112" cy="153" r="3.5" fill="#c8908a"/>
+          </g>
+          <!-- Pétalas caindo -->
+          <ellipse cx="155" cy="178" rx="5" ry="8"  fill="#f0d0d5" transform="rotate(30,155,178)"  opacity="0.6"/>
+          <ellipse cx="175" cy="220" rx="4" ry="7"  fill="#e8c0c5" transform="rotate(-20,175,220)" opacity="0.5"/>
+          <ellipse cx="135" cy="195" rx="4" ry="6"  fill="#f0d0d5" transform="rotate(50,135,195)"  opacity="0.45"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Eucalipto/verdura — esquerda meio -->
+    <div class="flor" id="flor-3" style="top:28%;left:-3%;width:200px;opacity:0.65">
+      <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <path d="M100 290 Q98 240 95 180 Q92 130 100 60" stroke="#7a9e78" stroke-width="2" fill="none"/>
+          <ellipse cx="88"  cy="240" rx="22" ry="14" fill="#a0c090" transform="rotate(-30,88,240)"  opacity="0.7"/>
+          <ellipse cx="110" cy="210" rx="22" ry="14" fill="#8ab080" transform="rotate(25,110,210)"  opacity="0.65"/>
+          <ellipse cx="85"  cy="178" rx="20" ry="13" fill="#a0c090" transform="rotate(-35,85,178)"  opacity="0.68"/>
+          <ellipse cx="112" cy="150" rx="20" ry="13" fill="#8ab080" transform="rotate(30,112,150)"  opacity="0.62"/>
+          <ellipse cx="87"  cy="120" rx="18" ry="12" fill="#a0c090" transform="rotate(-25,87,120)"  opacity="0.65"/>
+          <ellipse cx="110" cy="95"  rx="18" ry="12" fill="#8ab080" transform="rotate(20,110,95)"   opacity="0.60"/>
+          <ellipse cx="96"  cy="68"  rx="16" ry="10" fill="#a0c090" transform="rotate(-15,96,68)"   opacity="0.55"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Margarida — direita meio-baixo -->
+    <div class="flor" id="flor-4" style="top:42%;right:-2%;width:180px;opacity:0.70">
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <path d="M100 270 Q102 220 105 170 Q108 130 100 70" stroke="#8a9e6a" stroke-width="2" fill="none"/>
+          <path d="M103 180 Q125 165 140 145 Q128 168 105 172Z" fill="#a8bf80" opacity="0.65"/>
+          <path d="M104 150 Q80 133 68 112 Q92 118 105 138Z"  fill="#8a9e6a" opacity="0.60"/>
+          <!-- Margarida -->
+          <g transform="translate(100,68)">
+            <ellipse rx="7" ry="20" fill="#faf0e0" transform="rotate(0)"   opacity="0.9"/>
+            <ellipse rx="7" ry="20" fill="#f5e8d0" transform="rotate(36)"  opacity="0.85"/>
+            <ellipse rx="7" ry="20" fill="#faf0e0" transform="rotate(72)"  opacity="0.9"/>
+            <ellipse rx="7" ry="20" fill="#f5e8d0" transform="rotate(108)" opacity="0.85"/>
+            <ellipse rx="7" ry="20" fill="#faf0e0" transform="rotate(144)" opacity="0.9"/>
+            <ellipse rx="7" ry="20" fill="#f5e8d0" transform="rotate(180)" opacity="0.85"/>
+            <ellipse rx="7" ry="20" fill="#faf0e0" transform="rotate(216)" opacity="0.9"/>
+            <ellipse rx="7" ry="20" fill="#f5e8d0" transform="rotate(252)" opacity="0.85"/>
+            <ellipse rx="7" ry="20" fill="#faf0e0" transform="rotate(288)" opacity="0.9"/>
+            <ellipse rx="7" ry="20" fill="#f5e8d0" transform="rotate(324)" opacity="0.85"/>
+            <circle r="13" fill="#d4a840"/>
+            <circle r="8"  fill="#b88828"/>
+          </g>
+          <!-- Botão -->
+          <g transform="translate(118,120)">
+            <ellipse rx="5" ry="13" fill="#faf0e0" transform="rotate(0)"   opacity="0.75"/>
+            <ellipse rx="5" ry="13" fill="#f5e8d0" transform="rotate(60)"  opacity="0.7"/>
+            <ellipse rx="5" ry="13" fill="#faf0e0" transform="rotate(120)" opacity="0.75"/>
+            <ellipse rx="5" ry="13" fill="#f5e8d0" transform="rotate(180)" opacity="0.7"/>
+            <ellipse rx="5" ry="13" fill="#faf0e0" transform="rotate(240)" opacity="0.75"/>
+            <ellipse rx="5" ry="13" fill="#f5e8d0" transform="rotate(300)" opacity="0.7"/>
+            <circle r="8" fill="#d4a840"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Peônia pequena — canto inferior esquerdo do hero -->
+    <div class="flor" id="flor-5" style="bottom:4%;left:3%;width:160px;opacity:0.60">
+      <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <path d="M90 190 Q88 160 85 130 Q82 100 90 55" stroke="#8a9e6a" stroke-width="1.8" fill="none"/>
+          <path d="M87 140 Q62 125 50 105 Q74 110 87 130Z" fill="#a8bf80" opacity="0.6"/>
+          <path d="M88 110 Q110 95 125 78 Q115 100 92 105Z" fill="#8a9e6a" opacity="0.55"/>
+          <!-- Peônia -->
+          <ellipse cx="90" cy="52" rx="24" ry="30" fill="#edc8c4" transform="rotate(-10,90,52)" opacity="0.88"/>
+          <ellipse cx="90" cy="52" rx="24" ry="30" fill="#e4b8b2" transform="rotate(34,90,52)"  opacity="0.82"/>
+          <ellipse cx="90" cy="52" rx="24" ry="30" fill="#edc8c4" transform="rotate(78,90,52)"  opacity="0.85"/>
+          <ellipse cx="90" cy="52" rx="24" ry="30" fill="#e4b8b2" transform="rotate(122,90,52)" opacity="0.80"/>
+          <ellipse cx="90" cy="52" rx="20" ry="25" fill="#f0d0cc" transform="rotate(12,90,52)"  opacity="0.9"/>
+          <ellipse cx="90" cy="52" rx="20" ry="25" fill="#e8c0bc" transform="rotate(57,90,52)"  opacity="0.85"/>
+          <ellipse cx="90" cy="52" rx="20" ry="25" fill="#f0d0cc" transform="rotate(102,90,52)" opacity="0.9"/>
+          <circle cx="90" cy="52" r="12" fill="#d4a0a0"/>
+          <circle cx="90" cy="52" r="6"  fill="#c08888"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Ramo dourado — canto inferior direito do hero -->
+    <div class="flor" id="flor-6" style="bottom:2%;right:2%;width:200px;opacity:0.55">
+      <svg viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <path d="M110 230 Q108 190 106 155 Q104 120 110 70" stroke="#b09050" stroke-width="1.8" fill="none"/>
+          <path d="M107 165 Q82 148 68 128 Q90 132 107 152Z"  fill="#c8a860" opacity="0.55"/>
+          <path d="M108 135 Q132 118 148 100 Q136 124 110 128Z" fill="#b09050" opacity="0.50"/>
+          <path d="M109 105 Q88 88 75 68 Q97 76 109 96Z"    fill="#c8a860" opacity="0.48"/>
+          <!-- Berries douradas -->
+          <circle cx="110" cy="68" r="9"  fill="#c8a840" opacity="0.80"/>
+          <circle cx="102" cy="60" r="7"  fill="#d4b850" opacity="0.75"/>
+          <circle cx="120" cy="60" r="7"  fill="#c0983a" opacity="0.78"/>
+          <circle cx="108" cy="52" r="6"  fill="#d4b850" opacity="0.70"/>
+          <circle cx="118" cy="52" r="5"  fill="#c8a840" opacity="0.72"/>
+          <circle cx="110" cy="44" r="5"  fill="#d4b850" opacity="0.65"/>
+          <!-- Hastes berries -->
+          <line x1="110" y1="68" x2="102" y2="60" stroke="#9e7830" stroke-width="1" opacity="0.6"/>
+          <line x1="110" y1="68" x2="120" y2="60" stroke="#9e7830" stroke-width="1" opacity="0.6"/>
+          <line x1="110" y1="68" x2="108" y2="52" stroke="#9e7830" stroke-width="1" opacity="0.5"/>
+          <line x1="110" y1="68" x2="118" y2="52" stroke="#9e7830" stroke-width="1" opacity="0.5"/>
+          <line x1="110" y1="68" x2="110" y2="44" stroke="#9e7830" stroke-width="1" opacity="0.45"/>
+        </g>
+      </svg>
+    </div>
+
+  </div>
+  <!-- /flores-container -->
+
+</section>
+</div><!-- /#shero-track -->
+
+<!-- ── Anúncio ─────────────────────────────────────────────── -->
+<section id="anuncio">
+  <div class="anuncio-inner">
+    <div class="anuncio-eyebrow reveal">Com imensa alegria</div>
+    <p class="anuncio-text reveal reveal-delay-1">
+      Após tantos sorrisos compartilhados, aventuras vividas
+      e um amor que só cresceu a cada dia, chegou o momento
+      de unir nossas vidas para sempre.<br><br>
+      <em>Mari e Lucas</em> têm a honra de convidar você
+      para celebrar conosco a cerimônia de nosso casamento.
+    </p>
+    <div class="anuncio-signature reveal reveal-delay-2">M &amp; L</div>
+  </div>
+</section>
+
+<!-- ── História ────────────────────────────────────────────── -->
+<section id="historia">
+  <div class="section">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Nossa história</span>
+      <h2 class="section-title">Como tudo começou</h2>
+      <p class="section-subtitle">Cada capítulo nos trouxe até aqui</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">✨</div>
+        <div class="timeline-year">O primeiro encontro</div>
+        <h3 class="timeline-title">Quando nossos olhos se cruzaram</h3>
+        <p class="timeline-desc">
+          Foi em um dia comum que tudo mudou. Um sorriso, uma conversa que não queria terminar,
+          e a certeza de que aquele momento era o início de algo extraordinário.
+        </p>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-1">
+        <div class="timeline-dot">💛</div>
+        <div class="timeline-year">O namoro</div>
+        <h3 class="timeline-title">Crescendo juntos a cada dia</h3>
+        <p class="timeline-desc">
+          Viagens, aventuras, noites de filme, almoços de domingo e a descoberta de que
+          ser feliz ao lado de alguém pode ser a coisa mais simples e bonita do mundo.
+        </p>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-2">
+        <div class="timeline-dot">💍</div>
+        <div class="timeline-year">O pedido</div>
+        <h3 class="timeline-title">A pergunta que mudou tudo</h3>
+        <p class="timeline-desc">
+          Em um momento inesquecível, cheio de emoção e amor, veio a pergunta que
+          nossos corações já sabiam a resposta: <em>Quer casar comigo?</em>
+          E a resposta foi, claro, um sim enorme.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cerimônia ────────────────────────────────────────────── -->
+<section id="cerimonia">
+  <div class="section">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">O grande dia</span>
+      <h2 class="section-title">Cerimônia &amp; Recepção</h2>
+      <p class="section-subtitle">25 de outubro de 2026</p>
+    </div>
+
+    <div class="cerimonia-grid">
+      <div class="cerimonia-card reveal">
+        <div class="cerimonia-icon">⛪</div>
+        <div class="cerimonia-tipo">Cerimônia</div>
+        <h3 class="cerimonia-name" id="venue-ceremony-name">Igreja Nossa Senhora das Graças</h3>
+        <p class="cerimonia-info">
+          <strong>15h30</strong><br>
+          <span id="venue-ceremony-address">Rua das Flores, 123 — São Paulo, SP</span>
+        </p>
+      </div>
+
+      <div class="cerimonia-card reveal reveal-delay-1">
+        <div class="cerimonia-icon">🥂</div>
+        <div class="cerimonia-tipo">Recepção</div>
+        <h3 class="cerimonia-name" id="venue-reception-name">Espaço Villa Romantica</h3>
+        <p class="cerimonia-info">
+          <strong>18h00</strong><br>
+          <span id="venue-reception-address">Av. das Palmeiras, 456 — São Paulo, SP</span>
+        </p>
+      </div>
+
+      <div class="cerimonia-card dresscode-card reveal reveal-delay-2">
+        <div class="cerimonia-icon">👗</div>
+        <div class="cerimonia-tipo">Dress Code</div>
+        <h3 class="cerimonia-name">Esporte Fino / Black Tie Opcional</h3>
+        <p class="cerimonia-info">Venha elegante e confortável para celebrar conosco!</p>
+        <div class="dresscode-tags">
+          <span class="dresscode-tag">Esporte fino</span>
+          <span class="dresscode-tag">Traje de gala</span>
+          <span class="dresscode-tag">Evite branco e vermelho</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Presentes ────────────────────────────────────────────── -->
+<section id="presentes">
+  <div class="section">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Lista de presentes</span>
+      <h2 class="section-title">Presenteie com amor</h2>
+    </div>
+
+    <p class="presentes-intro reveal">
+      Sua presença já é o maior presente. Se quiser nos mimar com algo especial,
+      preparamos esta lista com muito carinho. Cada item tem uma chave Pix para
+      facilitar — é rápido e seguro! 💛
+    </p>
+
+    <div id="presentes-grid" class="presentes-grid">
+      <div class="presentes-loading">Carregando presentes com amor... 💝</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Modal de Presente ────────────────────────────────────── -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">×</button>
+
+    <!-- Step 1: Pix -->
+    <div id="modal-step-1" class="modal-step active">
+      <span class="section-eyebrow">Você escolheu</span>
+      <h3 class="modal-presente-nome" id="modal-nome">—</h3>
+      <div class="modal-presente-valor" id="modal-valor">—</div>
+
+      <p class="modal-instrucao">
+        Copie a chave Pix abaixo, abra o aplicativo do seu banco,
+        e faça o Pix para os noivos. Depois volte aqui e confirme! 💛
+      </p>
+
+      <div class="pix-box">
+        <div>
+          <div style="font-size:0.7rem;color:var(--brown-mid);margin-bottom:0.25rem;">Chave Pix · <span id="modal-pix-nome"></span></div>
+          <div class="pix-key" id="modal-pix-key">—</div>
+        </div>
+        <button id="btn-copy-pix" class="btn-copy">Copiar</button>
+      </div>
+
+      <button id="btn-ja-fiz-pix" class="btn-primary">✓ Já fiz o Pix</button>
+      <button onclick="fecharModal()" class="btn-secondary">Voltar para presentes</button>
+    </div>
+
+    <!-- Step 2: Formulário -->
+    <div id="modal-step-2" class="modal-step">
+      <span class="section-eyebrow">Confirmar presente</span>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin:0.5rem 0 1.5rem;">Conta pra gente que foi você! 💕</h3>
+
+      <form id="modal-form" novalidate>
+        <input type="hidden" id="modal-presente-nome-form">
+        <input type="hidden" id="modal-presente-valor-form">
+
+        <div class="form-group-modal">
+          <label class="form-label" for="modal-nome-pessoa">Seu nome *</label>
+          <input class="form-input" type="text" id="modal-nome-pessoa" placeholder="Como você se chama" required>
+        </div>
+
+        <div class="form-group-modal">
+          <label class="form-label" for="modal-telefone">WhatsApp *</label>
+          <input class="form-input" type="tel" id="modal-telefone" placeholder="(11) 99999-9999" required>
+        </div>
+
+        <div class="form-group-modal">
+          <label class="form-label" for="modal-mensagem-pix">Mensagem para os noivos</label>
+          <textarea class="form-input form-textarea" id="modal-mensagem-pix" placeholder="Escreva algo com carinho... 💛" style="min-height:80px;"></textarea>
+        </div>
+
+        <button type="submit" id="btn-confirmar-pix" class="btn-primary">Confirmar presente 🎁</button>
+        <button type="button" id="btn-voltar-pix" class="btn-secondary">← Voltar</button>
+      </form>
+    </div>
+
+    <!-- Step 3: Sucesso -->
+    <div id="modal-step-3" class="modal-step">
+      <div class="modal-success">
+        <div class="modal-success-icon">💝</div>
+        <h3>Muito obrigados!</h3>
+        <p>Seu presente foi registrado com muito amor.<br>
+           Mal podemos esperar para celebrar com você!</p>
+        <button id="btn-fechar-modal" class="btn-primary" style="margin-top:1.5rem;">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RSVP ────────────────────────────────────────────────── -->
+<section id="rsvp">
+  <div class="section">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Confirmação de presença</span>
+      <h2 class="section-title">Você vai vir, né?</h2>
+      <p class="section-subtitle">Confirme até 30/09/2026 para garantirmos um lugar especial para você</p>
+    </div>
+
+    <div class="rsvp-form reveal">
+      <form id="rsvp-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="rsvp-responsavel">Responsável pelo grupo *</label>
+          <input class="form-input" type="text" id="rsvp-responsavel" placeholder="Seu nome completo" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="rsvp-telefone">WhatsApp *</label>
+          <input class="form-input" type="tel" id="rsvp-telefone" placeholder="(11) 99999-9999" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="rsvp-email">E-mail</label>
+          <input class="form-input" type="email" id="rsvp-email" placeholder="seu@email.com">
+        </div>
+
+        <!-- Lista de convidados -->
+        <div class="form-group">
+          <div class="convidados-header">
+            <label class="form-label" style="margin:0;">Quem virá com você? *</label>
+            <button type="button" id="btn-add-convidado" class="btn-add-convidado">
+              + Adicionar pessoa
+            </button>
+          </div>
+
+          <div id="convidados-container">
+            <div class="convidado-row">
+              <input type="text" class="form-input convidado-nome" placeholder="Seu nome completo" required>
+              <select class="convidado-faixa">
+                <option value="adulto">Adulto</option>
+                <option value="crianca">Criança (≤12)</option>
+              </select>
+              <button type="button" class="btn-remove-convidado" onclick="removeConvidado(this)">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="rsvp-mensagem">Mensagem para os noivos</label>
+          <textarea class="form-input form-textarea" id="rsvp-mensagem" placeholder="Deixe um recado cheio de carinho... 💕"></textarea>
+        </div>
+
+        <button type="submit" id="btn-rsvp-submit" class="btn-primary">
+          💌 Confirmar presença
+        </button>
+      </form>
+
+      <div id="rsvp-success" class="rsvp-success">
+        <div class="rsvp-success-icon">🎊</div>
+        <h3>Presença confirmada!</h3>
+        <p>Que alegria! Mal podemos esperar para celebrar com você no dia 25/10/2026. 💕</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ──────────────────────────────────────────────── -->
+<footer id="footer">
+  <div class="footer-monogram">M &amp; L</div>
+  <p class="footer-frase">"E foram felizes para sempre — a partir de 25 de outubro de 2026."</p>
+  <div class="footer-date">25 · 10 · 2026</div>
+  <a href="admin.html" class="footer-admin-link">área restrita</a>
+</footer>
+
+<!-- ── Scripts ─────────────────────────────────────────────── -->
+<script src="config.js"></script>
+<script>
+  // Preenche info de venue a partir do config
+  document.addEventListener('DOMContentLoaded', () => {
+    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+    set('venue-ceremony-name',    CONFIG.VENUE_CEREMONY);
+    set('venue-ceremony-address', CONFIG.VENUE_CEREMONY_ADDRESS);
+    set('venue-reception-name',   CONFIG.VENUE_RECEPTION);
+    set('venue-reception-address',CONFIG.VENUE_RECEPTION_ADDRESS);
+  });
+</script>
+<script src="script.js"></script>
+</body>
+</html>
