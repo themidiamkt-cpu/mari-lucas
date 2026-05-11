@@ -9,6 +9,33 @@
     /* ── Admin override styles ────────────────────────────── */
     body { background: #f5f0eb; }
 
+    /* Upload de imagem */
+    .upload-area {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      border: 2px dashed var(--rose-light);
+      border-radius: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .upload-area:hover { border-color: var(--rose); background: #fdf8f5; }
+    .upload-area.has-image { border-style: solid; border-color: var(--rose); }
+    .upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; pointer-events: none; }
+    .upload-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--rose-light);
+      border-top-color: var(--rose);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     .admin-login {
       min-height: 100vh;
       display: flex;
@@ -362,8 +389,20 @@
             <input class="form-input" type="number" id="p-preco" placeholder="Ex: 450.00" step="0.01" min="0">
           </div>
           <div class="form-group">
-            <label class="form-label">URL da imagem</label>
-            <input class="form-input" type="url" id="p-imagem" placeholder="https://images.unsplash.com/...">
+            <label class="form-label">Imagem do presente</label>
+            <div class="upload-area" id="upload-area" onclick="document.getElementById('p-imagem-file').click()">
+              <div class="upload-placeholder" id="upload-placeholder">
+                <span style="font-size:2rem">📷</span>
+                <span style="font-size:0.85rem;color:var(--brown-mid)">Clique para escolher uma foto</span>
+              </div>
+              <img id="upload-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:10px;" alt="preview">
+              <div id="upload-progress" style="display:none;position:absolute;inset:0;background:rgba(250,246,241,0.85);border-radius:10px;display:none;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;">
+                <div class="upload-spinner"></div>
+                <span style="font-size:0.8rem;color:var(--brown-mid)">Enviando...</span>
+              </div>
+            </div>
+            <input type="file" id="p-imagem-file" accept="image/*" style="display:none">
+            <input type="hidden" id="p-imagem">
           </div>
           <div class="form-group">
             <label class="form-label">Ordem de exibição</label>
@@ -641,6 +680,58 @@ async function acao(tipo, id) {
   }
 }
 
+// ── Upload de imagem para Supabase Storage ─────────────────
+document.getElementById('p-imagem-file')?.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const area        = document.getElementById('upload-area');
+  const placeholder = document.getElementById('upload-placeholder');
+  const preview     = document.getElementById('upload-preview');
+  const progress    = document.getElementById('upload-progress');
+
+  // Mostra spinner
+  placeholder.style.display = 'none';
+  preview.style.display     = 'none';
+  progress.style.display    = 'flex';
+
+  const ext      = file.name.split('.').pop();
+  const fileName = `presente_${Date.now()}.${ext}`;
+  const bucket   = 'presentes';
+
+  try {
+    const res = await fetch(
+      `${CONFIG.SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`,
+      {
+        method: 'POST',
+        headers: {
+          apikey: CONFIG.SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+          'Content-Type': file.type,
+          'x-upsert': 'true',
+        },
+        body: file,
+      }
+    );
+
+    if (!res.ok) throw new Error(await res.text());
+
+    const publicUrl = `${CONFIG.SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
+    document.getElementById('p-imagem').value = publicUrl;
+
+    // Mostra preview
+    preview.src            = publicUrl;
+    preview.style.display  = 'block';
+    area.classList.add('has-image');
+  } catch (err) {
+    console.error('Upload falhou:', err);
+    showAdminToast('Erro ao enviar imagem. Verifique o bucket no Supabase.', 'error');
+    placeholder.style.display = 'flex';
+  } finally {
+    progress.style.display = 'none';
+  }
+});
+
 // Form adicionar presente
 document.getElementById('form-add-presente')?.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -658,6 +749,10 @@ document.getElementById('form-add-presente')?.addEventListener('submit', async (
   if (ok) {
     showAdminToast('Presente adicionado! 🎁');
     e.target.reset();
+    // Reset upload area
+    document.getElementById('upload-preview').style.display = 'none';
+    document.getElementById('upload-placeholder').style.display = 'flex';
+    document.getElementById('upload-area').classList.remove('has-image');
     carregarPresentesAdmin();
   } else {
     showAdminToast('Erro ao adicionar presente.', 'error');
