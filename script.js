@@ -110,7 +110,7 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('hidden');
-  }, 1200);
+  }, 1000);
 });
 
 // ── Nav ────────────────────────────────────────────────────
@@ -128,6 +128,42 @@ burger?.addEventListener('click', () => {
 
 navLinks?.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// ── Sistema de Abas ────────────────────────────────────────
+let presentesCarregados = false;
+
+function switchTab(tabName) {
+  // Atualiza painéis
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `tab-${tabName}`);
+  });
+
+  // Atualiza botões de aba (nav desktop + mobile hero)
+  document.querySelectorAll('.nav-tab, .hero-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+    btn.setAttribute('aria-selected', btn.dataset.tab === tabName ? 'true' : 'false');
+  });
+
+  // Mostra/oculta links internos da home
+  const homeLinks = document.getElementById('nav-links-home');
+  if (homeLinks) homeLinks.style.display = tabName === 'home' ? '' : 'none';
+
+  // Rola para o topo
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Carrega presentes na primeira vez que a aba abre
+  if (tabName === 'presentes' && !presentesCarregados) {
+    carregarPresentes();
+    presentesCarregados = true;
+  }
+}
+
+// Conecta todos os botões de aba
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
 });
 
 // ── Countdown ──────────────────────────────────────────────
@@ -423,6 +459,7 @@ document.getElementById('rsvp-form')?.addEventListener('submit', async (e) => {
   const { ok } = await db.insert('rsvp', payload);
 
   if (ok) {
+    // Oculta formulário e mostra sucesso (com botão para presentes)
     document.getElementById('rsvp-form').style.display = 'none';
     document.getElementById('rsvp-success').classList.add('show');
     showToast('Presença confirmada! Mal podemos esperar! 💕');
@@ -433,107 +470,8 @@ document.getElementById('rsvp-form')?.addEventListener('submit', async (e) => {
   }
 });
 
-// ── Scroll Expansion Hero ──────────────────────────────────
-const floresConfig = {
-  'flor-1': { speedY: -0.18, speedX:  0.06, rotate:  0.025 },
-  'flor-2': { speedY: -0.12, speedX: -0.05, rotate: -0.018 },
-  'flor-3': { speedY: -0.22, speedX:  0.04, rotate:  0.012 },
-  'flor-4': { speedY: -0.14, speedX: -0.06, rotate: -0.020 },
-  'flor-5': { speedY: -0.08, speedX:  0.03, rotate:  0.010 },
-  'flor-6': { speedY: -0.10, speedX: -0.04, rotate: -0.015 },
-};
-
-function initScrollExpansionHero() {
-  const track    = document.getElementById('shero-track');
-  const media    = document.getElementById('shero-media');
-  const mediaDim = document.getElementById('shero-media-dim');
-  const bgEl     = document.getElementById('shero-bg');
-  const wordL    = document.getElementById('shero-word-left');
-  const wordR    = document.getElementById('shero-word-right');
-  const metaEl   = document.getElementById('shero-meta');
-  const revealed = document.getElementById('shero-revealed');
-  const flores   = document.querySelector('.flores-container');
-
-  if (!track || !media) return;
-
-  function applyProgress(p) {
-    const mobile = window.innerWidth <= 768;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
-    // ── Media card expansion ─────────────────────────────
-    const startW = mobile ? 240 : 300;
-    const startH = mobile ? 320 : 400;
-    const w = startW + p * (vw - startW);
-    const h = startH + p * (vh - startH);
-    media.style.width        = w + 'px';
-    media.style.height       = h + 'px';
-    media.style.borderRadius = (16 * (1 - p)) + 'px';
-    const shadowBlur = 80 * (1 - p);
-    media.style.boxShadow    = `0 ${30 * (1 - p)}px ${shadowBlur}px rgba(0,0,0,${0.45 * (1 - p)})`;
-
-    // ── Background image fades in ────────────────────────
-    if (bgEl) bgEl.style.opacity = p;
-
-    // ── Dark overlay on media ────────────────────────────
-    if (mediaDim) mediaDim.style.background = `rgba(0,0,0,${p * 0.55})`;
-
-    // ── Names slide apart ────────────────────────────────
-    const txVw = p * (mobile ? 170 : 140);
-    if (wordL) wordL.style.transform = `translateX(-${txVw}vw)`;
-    if (wordR) wordR.style.transform = `translateX(${txVw}vw)`;
-
-    // ── Meta fades out (gone by p≈0.4) ──────────────────
-    const metaOpacity = Math.max(0, 1 - p * 2.5);
-    if (metaEl) {
-      metaEl.style.opacity       = metaOpacity;
-      metaEl.style.pointerEvents = metaOpacity < 0.1 ? 'none' : 'auto';
-    }
-
-    // ── Revealed content fades in from p=0.82 ───────────
-    const revealOpacity = p >= 1 ? 1 : Math.max(0, (p - 0.82) / 0.18);
-    if (revealed) {
-      revealed.style.opacity     = revealOpacity;
-      revealed.classList.toggle('active', p >= 0.82);
-    }
-    if (flores) flores.style.opacity = revealOpacity;
-  }
-
-  let ticking = false;
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-
-    requestAnimationFrame(() => {
-      const rect       = track.getBoundingClientRect();
-      const trackTop   = window.scrollY + rect.top;
-      const scrolled   = window.scrollY - trackTop;
-      const scrollable = track.offsetHeight - window.innerHeight;
-      const p = Math.max(0, Math.min(1, scrolled / scrollable));
-
-      applyProgress(p);
-
-      // Parallax flores — kick in after expansion completes
-      if (p >= 1) {
-        const extra = window.scrollY - (trackTop + scrollable);
-        Object.entries(floresConfig).forEach(([id, cfg]) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          el.style.transform = `translate(${extra * cfg.speedX}px, ${extra * cfg.speedY}px) rotate(${extra * cfg.rotate}deg)`;
-        });
-      }
-
-      ticking = false;
-    });
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  applyProgress(0); // set initial state
-}
-
 // ── Init ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  carregarPresentes();
-  initScrollExpansionHero();
+  // Não carrega presentes logo de inicio — só quando a aba for aberta
+  // (carregarPresentes é chamado pelo switchTab quando necessário)
 });
