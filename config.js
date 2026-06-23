@@ -16,6 +16,12 @@ const CONFIG = {
   PIX_NOME: "Mari e Lucas",
   //  Exemplo: PIX_KEY: "marilucas@email.com"
 
+  // ── Asaas ─────────────────────────────────────────────────
+  // Cole aqui um link de pagamento do Asaas quando estiver pronto.
+  // Para integração por API, use um backend/n8n. Não coloque token privado do Asaas neste arquivo.
+  ASAAS_PAYMENT_URL: "",
+  ASAAS_ENABLED: false,
+
   // ── n8n Webhook ───────────────────────────────────────────
   // Cole a URL do webhook criado no n8n (Production URL)
   N8N_WEBHOOK_URL: "https://automacao2.themidiamarketing.com.br/webhook/mari-lucas",
@@ -23,10 +29,10 @@ const CONFIG = {
 
   // ── Casamento ─────────────────────────────────────────────
   WEDDING_DATE: "2026-10-25T15:30:00",
-  VENUE_CEREMONY: "Igreja Nossa Senhora das Graças",
-  VENUE_CEREMONY_ADDRESS: "Rua das Flores, 123 — São Paulo, SP",
-  VENUE_RECEPTION: "Espaço Villa Romantica",
-  VENUE_RECEPTION_ADDRESS: "Av. das Palmeiras, 456 — São Paulo, SP",
+  VENUE_CEREMONY: "Espaço Ibiacê",
+  VENUE_CEREMONY_ADDRESS: "Estr. Sousas - Pedreira - Souzas, Campinas - SP, 13104-901",
+  VENUE_RECEPTION: "Espaço Ibiacê",
+  VENUE_RECEPTION_ADDRESS: "Estr. Sousas - Pedreira - Souzas, Campinas - SP, 13104-901",
 
   // ── Admin ─────────────────────────────────────────────────
   // ⚠️ Troque esta senha antes de publicar!

@@ -286,6 +286,17 @@ function abrirModalPresente(id) {
   document.getElementById('modal-pix-nome').textContent = CONFIG.PIX_NOME || 'Mari e Lucas';
   document.getElementById('modal-presente-nome-form').value = presente.nome;
   document.getElementById('modal-presente-valor-form').value = presente.preco || '';
+  document.getElementById('modal-payment-method').value = 'pix';
+
+  const asaasConfigured = Boolean(CONFIG.ASAAS_ENABLED && CONFIG.ASAAS_PAYMENT_URL);
+  const asaasBtn = document.getElementById('btn-pagar-asaas');
+  const asaasStatus = document.getElementById('asaas-status');
+  if (asaasBtn) asaasBtn.disabled = !asaasConfigured;
+  if (asaasStatus) {
+    asaasStatus.textContent = asaasConfigured
+      ? 'Ao finalizar no Asaas, volte aqui para confirmar o presente.'
+      : 'Em breve: aguardando configuração do link/API.';
+  }
 
   // Reset
   step1.classList.add('active');
@@ -335,8 +346,21 @@ document.getElementById('btn-copy-pix')?.addEventListener('click', function() {
 
 // Ir para step 2 (form de confirmação)
 document.getElementById('btn-ja-fiz-pix')?.addEventListener('click', () => {
+  document.getElementById('modal-payment-method').value = 'pix';
   document.getElementById('modal-step-1').classList.remove('active');
   document.getElementById('modal-step-2').classList.add('active');
+});
+
+document.getElementById('btn-pagar-asaas')?.addEventListener('click', () => {
+  const url = CONFIG.ASAAS_PAYMENT_URL;
+  if (!CONFIG.ASAAS_ENABLED || !url) {
+    showToast('Pagamento pelo Asaas ainda será configurado.', 'error');
+    return;
+  }
+
+  document.getElementById('modal-payment-method').value = 'asaas';
+  window.open(url, '_blank', 'noopener,noreferrer');
+  showToast('Abrimos o Asaas em outra aba. Depois volte aqui para confirmar.', 'success', 4500);
 });
 
 // Voltar para step 1
@@ -355,6 +379,7 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   const nome     = document.getElementById('modal-nome-pessoa').value.trim();
   const telefone = document.getElementById('modal-telefone').value.trim();
   const mensagem = document.getElementById('modal-mensagem-pix').value.trim();
+  const paymentMethod = document.getElementById('modal-payment-method').value || 'pix';
   const presenteNome  = presenteSelecionado?.nome || '';
   const presenteValor = presenteSelecionado?.preco || null;
   const presenteId    = presenteSelecionado?.id || null;
@@ -366,7 +391,7 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
     nome_pessoa:    nome,
     telefone,
     mensagem,
-    status:         'pix_declarado',
+    status:         paymentMethod === 'asaas' ? 'asaas_declarado' : 'pix_declarado',
     enviado_em:     new Date().toISOString(),
   };
 
