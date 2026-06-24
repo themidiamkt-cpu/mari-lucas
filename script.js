@@ -288,14 +288,17 @@ function abrirModalPresente(id) {
   document.getElementById('modal-presente-valor-form').value = presente.preco || '';
   document.getElementById('modal-payment-method').value = 'pix';
 
-  const asaasConfigured = Boolean(CONFIG.ASAAS_ENABLED && CONFIG.ASAAS_PAYMENT_URL);
+  const asaasConfigured = Boolean(
+    CONFIG.ASAAS_ENABLED &&
+    (CONFIG.ASAAS_CREATE_PAYMENT_FUNCTION_URL || CONFIG.ASAAS_PAYMENT_URL)
+  );
   const asaasBtn = document.getElementById('btn-pagar-asaas');
   const asaasStatus = document.getElementById('asaas-status');
   if (asaasBtn) asaasBtn.disabled = !asaasConfigured;
   if (asaasStatus) {
     asaasStatus.textContent = asaasConfigured
-      ? 'Ao finalizar no Asaas, volte aqui para confirmar o presente.'
-      : 'Em breve: aguardando configuração do link/API.';
+      ? 'Ao finalizar o pagamento, volte aqui para confirmar o presente.'
+      : 'Pagamento por cartão em configuração.';
   }
 
   // Reset
@@ -351,16 +354,54 @@ document.getElementById('btn-ja-fiz-pix')?.addEventListener('click', () => {
   document.getElementById('modal-step-2').classList.add('active');
 });
 
-document.getElementById('btn-pagar-asaas')?.addEventListener('click', () => {
-  const url = CONFIG.ASAAS_PAYMENT_URL;
-  if (!CONFIG.ASAAS_ENABLED || !url) {
-    showToast('Pagamento pelo Asaas ainda será configurado.', 'error');
+document.getElementById('btn-pagar-asaas')?.addEventListener('click', async function() {
+  if (!CONFIG.ASAAS_ENABLED) {
+    showToast('Pagamento por cartão ainda será configurado.', 'error');
     return;
   }
 
   document.getElementById('modal-payment-method').value = 'asaas';
-  window.open(url, '_blank', 'noopener,noreferrer');
-  showToast('Abrimos o Asaas em outra aba. Depois volte aqui para confirmar.', 'success', 4500);
+
+  const fallbackUrl = CONFIG.ASAAS_PAYMENT_URL;
+  const functionUrl = CONFIG.ASAAS_CREATE_PAYMENT_FUNCTION_URL;
+  const originalText = this.textContent;
+
+  try {
+    this.disabled = true;
+    this.textContent = 'Abrindo checkout...';
+
+    let checkoutUrl = fallbackUrl;
+
+    if (functionUrl) {
+      const res = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: CONFIG.SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          presente_id: presenteSelecionado?.id || null,
+          presente_nome: presenteSelecionado?.nome || '',
+          presente_valor: presenteSelecionado?.preco || null,
+        })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Erro ao criar pagamento no cartão.');
+      checkoutUrl = data.url || data.invoiceUrl || data.paymentLinkUrl;
+    }
+
+    if (!checkoutUrl) throw new Error('Link de pagamento não configurado.');
+
+    window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+    showToast('Abrimos o checkout em outra aba. Depois volte aqui para confirmar.', 'success', 4500);
+  } catch (error) {
+    showToast(error.message || 'Não foi possível abrir o pagamento agora.', 'error', 4500);
+  } finally {
+    this.disabled = false;
+    this.textContent = originalText;
+  }
 });
 
 // Voltar para step 1
