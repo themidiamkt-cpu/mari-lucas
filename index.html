@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Casamento de Mari e Lucas — 25 de outubro de 2026">
   <title>Mari & Lucas — 25.10.2026</title>
-  <link rel="stylesheet" href="style.css?v=cartao-3x">
+  <link rel="stylesheet" href="style.css?v=valor-livre">
   <!-- Open Graph -->
   <meta property="og:title" content="Mari & Lucas — Nosso Casamento">
   <meta property="og:description" content="Junte-se a nós neste dia especial — 25 de outubro de 2026">
@@ -498,8 +498,8 @@
 
     <p class="presentes-intro">
       Sua presença já é o maior presente. Se quiser nos mimar com algo especial,
-      preparamos esta lista com muito carinho. Você poderá usar Pix ou parcelar
-      em até 3x sem juros no cartão de crédito. 💛
+      preparamos esta lista com muito carinho. Escolha um presente e, se quiser,
+      informe o valor que deseja contribuir. 💛
     </p>
 
     <div id="presentes-grid" class="presentes-grid">
@@ -520,16 +520,25 @@
     <div id="modal-step-1" class="modal-step active">
       <span class="section-eyebrow">Você escolheu</span>
       <h3 class="modal-presente-nome" id="modal-nome">—</h3>
-      <div class="modal-presente-valor" id="modal-valor">—</div>
+      <div class="modal-presente-valor" id="modal-valor">Valor livre</div>
 
       <p class="modal-instrucao">
-        Escolha como deseja presentear. O Pix continua sendo a opção mais simples,
-        e também é possível parcelar em até 3x sem juros no cartão de crédito.
+        Informe o valor que deseja contribuir para este presente. Se preferir,
+        você também pode apenas confirmar sua intenção sem escolher um valor agora.
       </p>
+
+      <div class="gift-value-box">
+        <label class="form-label" for="modal-valor-livre">Valor do presente</label>
+        <div class="gift-value-input">
+          <span>R$</span>
+          <input class="form-input" type="number" id="modal-valor-livre" min="5" step="0.01" placeholder="Digite o valor">
+        </div>
+        <div class="gift-value-help">Para cartão, o valor mínimo é R$ 5,00.</div>
+      </div>
 
       <div class="payment-choice">
         <span class="payment-choice-label">Pix</span>
-        <p>Copie a chave, faça o Pix no seu banco e depois confirme o presente.</p>
+        <p>Copie a chave, faça o Pix com o valor que desejar e depois confirme o presente.</p>
       </div>
 
       <div class="pix-box">
@@ -544,7 +553,7 @@
 
       <div class="payment-choice payment-choice-asaas">
         <span class="payment-choice-label">Cartão de crédito</span>
-        <p>Parcele seu presente em até 3x sem juros.</p>
+        <p>Digite o valor acima e parcele em até 3x sem juros.</p>
         <button id="btn-pagar-asaas" class="btn-asaas" type="button">Pagar em até 3x sem juros</button>
         <div id="asaas-status" class="payment-status">Pagamento seguro por cartão de crédito.</div>
       </div>

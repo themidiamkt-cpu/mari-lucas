@@ -224,6 +224,13 @@ function showToast(msg, type = 'success', duration = 3000) {
 let presentes = [];
 let presenteSelecionado = null;
 
+function getValorLivrePresente() {
+  const input = document.getElementById('modal-valor-livre');
+  const raw = input?.value || '';
+  const value = Number(String(raw).replace(',', '.'));
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
 async function carregarPresentes() {
   const grid = document.getElementById('presentes-grid');
   if (!grid) return;
@@ -248,7 +255,7 @@ async function carregarPresentes() {
       <div class="presente-body">
         <div class="presente-nome">${p.nome}</div>
         ${p.descricao ? `<div class="presente-desc">${p.descricao}</div>` : ''}
-        ${p.preco ? `<div class="presente-preco">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</div>` : '<div class="presente-preco" style="color:var(--rose-dark)">Qualquer valor</div>'}
+        <div class="presente-preco" style="color:var(--rose-dark)">Valor livre</div>
         <div class="presente-status-badge ${p.status === 'dado' ? 'dado' : ''}">${p.status === 'dado' ? '✓ Presenteado' : '💝 Disponível'}</div>
       </div>
     </div>
@@ -279,14 +286,13 @@ function abrirModalPresente(id) {
 
   // Preencher step 1
   document.getElementById('modal-nome').textContent    = presente.nome;
-  document.getElementById('modal-valor').textContent   = presente.preco
-    ? `R$ ${parseFloat(presente.preco).toFixed(2).replace('.', ',')}`
-    : 'Qualquer valor';
+  document.getElementById('modal-valor').textContent   = 'Valor livre';
   document.getElementById('modal-pix-key').textContent = CONFIG.PIX_KEY;
   document.getElementById('modal-pix-nome').textContent = CONFIG.PIX_NOME || 'Mari e Lucas';
   document.getElementById('modal-presente-nome-form').value = presente.nome;
-  document.getElementById('modal-presente-valor-form').value = presente.preco || '';
+  document.getElementById('modal-presente-valor-form').value = '';
   document.getElementById('modal-payment-method').value = 'pix';
+  document.getElementById('modal-valor-livre').value = '';
 
   const asaasConfigured = Boolean(
     CONFIG.ASAAS_ENABLED &&
@@ -361,6 +367,12 @@ document.getElementById('btn-pagar-asaas')?.addEventListener('click', async func
   }
 
   document.getElementById('modal-payment-method').value = 'asaas';
+  const valorLivre = getValorLivrePresente();
+
+  if (!valorLivre || valorLivre < 5) {
+    showToast('Informe um valor de pelo menos R$ 5,00 para pagar no cartão.', 'error', 4500);
+    return;
+  }
 
   const fallbackUrl = CONFIG.ASAAS_PAYMENT_URL;
   const functionUrl = CONFIG.ASAAS_CREATE_PAYMENT_FUNCTION_URL;
@@ -383,7 +395,7 @@ document.getElementById('btn-pagar-asaas')?.addEventListener('click', async func
         body: JSON.stringify({
           presente_id: presenteSelecionado?.id || null,
           presente_nome: presenteSelecionado?.nome || '',
-          presente_valor: presenteSelecionado?.preco || null,
+          presente_valor: valorLivre,
         })
       });
 
@@ -421,9 +433,11 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   const telefone = document.getElementById('modal-telefone').value.trim();
   const mensagem = document.getElementById('modal-mensagem-pix').value.trim();
   const paymentMethod = document.getElementById('modal-payment-method').value || 'pix';
+  const valorLivre = getValorLivrePresente();
   const presenteNome  = presenteSelecionado?.nome || '';
-  const presenteValor = presenteSelecionado?.preco || null;
+  const presenteValor = valorLivre;
   const presenteId    = presenteSelecionado?.id || null;
+  document.getElementById('modal-presente-valor-form').value = presenteValor || '';
 
   const payload = {
     presente_id:    presenteId,

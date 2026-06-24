@@ -1023,6 +1023,37 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-he
   margin-bottom: 1.5rem;
 }
 
+.gift-value-box {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.gift-value-input {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.gift-value-input span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--gold-dark);
+}
+
+.gift-value-input .form-input {
+  flex: 1;
+  margin: 0;
+}
+
+.gift-value-help {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--brown-mid);
+}
+
 .payment-choice {
   background: rgba(255,255,255,0.68);
   border: 1px solid var(--cream-dark);
