@@ -485,7 +485,7 @@ function addConvidado() {
   const row = document.createElement('div');
   row.className = 'convidado-row';
   row.innerHTML = `
-    <input type="text" class="form-input convidado-nome" placeholder="Nome completo" required>
+    <input type="text" class="form-input convidado-nome" placeholder="Nome no convite" required>
     <select class="convidado-faixa">
       <option value="adulto">Adulto</option>
       <option value="crianca">Criança (≤12)</option>
