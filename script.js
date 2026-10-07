@@ -294,15 +294,15 @@ function abrirModalPresente(id) {
   document.getElementById('modal-payment-method').value = 'pix';
   document.getElementById('modal-valor-livre').value = '';
 
-  const asaasConfigured = Boolean(
-    CONFIG.ASAAS_ENABLED &&
-    (CONFIG.ASAAS_CREATE_PAYMENT_FUNCTION_URL || CONFIG.ASAAS_PAYMENT_URL)
+  const mercadoPagoConfigured = Boolean(
+    CONFIG.MERCADO_PAGO_ENABLED &&
+    (CONFIG.MERCADO_PAGO_CREATE_PAYMENT_FUNCTION_URL || CONFIG.MERCADO_PAGO_PAYMENT_URL)
   );
-  const asaasBtn = document.getElementById('btn-pagar-asaas');
-  const asaasStatus = document.getElementById('asaas-status');
-  if (asaasBtn) asaasBtn.disabled = !asaasConfigured;
-  if (asaasStatus) {
-    asaasStatus.textContent = asaasConfigured
+  const mercadoPagoBtn = document.getElementById('btn-pagar-mercado-pago');
+  const mercadoPagoStatus = document.getElementById('mercado-pago-status');
+  if (mercadoPagoBtn) mercadoPagoBtn.disabled = !mercadoPagoConfigured;
+  if (mercadoPagoStatus) {
+    mercadoPagoStatus.textContent = mercadoPagoConfigured
       ? 'Ao finalizar o pagamento, volte aqui para confirmar o presente.'
       : 'Pagamento por cartão em configuração.';
   }
@@ -360,13 +360,13 @@ document.getElementById('btn-ja-fiz-pix')?.addEventListener('click', () => {
   document.getElementById('modal-step-2').classList.add('active');
 });
 
-document.getElementById('btn-pagar-asaas')?.addEventListener('click', async function() {
-  if (!CONFIG.ASAAS_ENABLED) {
+document.getElementById('btn-pagar-mercado-pago')?.addEventListener('click', async function() {
+  if (!CONFIG.MERCADO_PAGO_ENABLED) {
     showToast('Pagamento por cartão ainda será configurado.', 'error');
     return;
   }
 
-  document.getElementById('modal-payment-method').value = 'asaas';
+  document.getElementById('modal-payment-method').value = 'mercado_pago';
   const valorLivre = getValorLivrePresente();
 
   if (!valorLivre || valorLivre < 5) {
@@ -374,8 +374,8 @@ document.getElementById('btn-pagar-asaas')?.addEventListener('click', async func
     return;
   }
 
-  const fallbackUrl = CONFIG.ASAAS_PAYMENT_URL;
-  const functionUrl = CONFIG.ASAAS_CREATE_PAYMENT_FUNCTION_URL;
+  const fallbackUrl = CONFIG.MERCADO_PAGO_PAYMENT_URL;
+  const functionUrl = CONFIG.MERCADO_PAGO_CREATE_PAYMENT_FUNCTION_URL;
   const originalText = this.textContent;
 
   try {
@@ -401,7 +401,7 @@ document.getElementById('btn-pagar-asaas')?.addEventListener('click', async func
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Erro ao criar pagamento no cartão.');
-      checkoutUrl = data.url || data.invoiceUrl || data.paymentLinkUrl;
+      checkoutUrl = data.url || data.init_point || data.paymentLinkUrl;
     }
 
     if (!checkoutUrl) throw new Error('Link de pagamento não configurado.');
@@ -446,7 +446,7 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
     nome_pessoa:    nome,
     telefone,
     mensagem,
-    status:         paymentMethod === 'asaas' ? 'asaas_declarado' : 'pix_declarado',
+    status:         paymentMethod === 'mercado_pago' ? 'mercado_pago_declarado' : 'pix_declarado',
     enviado_em:     new Date().toISOString(),
   };
 

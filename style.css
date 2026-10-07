@@ -1078,11 +1078,11 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-he
   line-height: 1.55;
 }
 
-.payment-choice-asaas {
+.payment-choice-mercado-pago {
   margin-top: 1.25rem;
 }
 
-.btn-asaas {
+.btn-mercado-pago {
   display: block;
   width: 100%;
   padding: 0.95rem;
@@ -1097,12 +1097,12 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-he
   transition: all var(--transition);
 }
 
-.btn-asaas:hover:not(:disabled) {
+.btn-mercado-pago:hover:not(:disabled) {
   background: #0b789f;
   transform: translateY(-1px);
 }
 
-.btn-asaas:disabled {
+.btn-mercado-pago:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }

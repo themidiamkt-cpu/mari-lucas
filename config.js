@@ -16,13 +16,14 @@ const CONFIG = {
   PIX_NOME: "Mari e Lucas",
   //  Exemplo: PIX_KEY: "marilucas@email.com"
 
-  // ── Asaas ─────────────────────────────────────────────────
+  // ── Mercado Pago ──────────────────────────────────────────
   // Para integração por API, use Supabase Edge Function + Secrets.
-  // Não coloque token privado do Asaas neste arquivo.
-  ASAAS_CREATE_PAYMENT_FUNCTION_URL: "https://fmquwsvcaqdterwoajly.supabase.co/functions/v1/create-asaas-payment",
-  // Link fixo opcional, caso prefira um checkout único/manual do Asaas.
-  ASAAS_PAYMENT_URL: "",
-  ASAAS_ENABLED: true,
+  // Não coloque token privado do Mercado Pago neste arquivo.
+  MERCADO_PAGO_CREATE_PAYMENT_FUNCTION_URL: "https://fmquwsvcaqdterwoajly.supabase.co/functions/v1/create-mercado-pago-payment",
+  // Link fixo opcional, caso prefira um checkout único/manual do Mercado Pago.
+  MERCADO_PAGO_PAYMENT_URL: "",
+  // Ative como true depois de publicar a função e configurar MERCADO_PAGO_ACCESS_TOKEN.
+  MERCADO_PAGO_ENABLED: false,
 
   // ── n8n Webhook ───────────────────────────────────────────
   // Cole a URL do webhook criado no n8n (Production URL)
