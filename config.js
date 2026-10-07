@@ -22,8 +22,7 @@ const CONFIG = {
   MERCADO_PAGO_CREATE_PAYMENT_FUNCTION_URL: "https://fmquwsvcaqdterwoajly.supabase.co/functions/v1/create-mercado-pago-payment",
   // Link fixo opcional, caso prefira um checkout único/manual do Mercado Pago.
   MERCADO_PAGO_PAYMENT_URL: "",
-  // Ative como true depois de publicar a função e configurar MERCADO_PAGO_ACCESS_TOKEN.
-  MERCADO_PAGO_ENABLED: false,
+  MERCADO_PAGO_ENABLED: true,
 
   // ── n8n Webhook ───────────────────────────────────────────
   // Cole a URL do webhook criado no n8n (Production URL)
